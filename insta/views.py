@@ -2,12 +2,19 @@ from django.shortcuts import render, HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import UserRegistrationForm
+from .models import Post
 # Create your views here.
 
 
 
 def home(request):
-    return render(request,'insta/home.html')
+    user = request.user
+    if user:
+        posts = Post.objects.filter(user=user)
+
+    return render(request,'insta/home.html',context={
+        'posts':posts
+    })
 
 
 
