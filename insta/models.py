@@ -12,3 +12,10 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
+
+
+
+class UserFollowing(models.Model):
+    user_id = models.ForeignKey(User, related_name="following")
+    following_user_id = models.ForeignKey(User, related_name="followers")
+    created = models.DateTimeField(auto_now_add=True)
