@@ -9,3 +9,6 @@ class Post(models.Model):
     description = models.CharField(max_length=250)
     likes = models.PositiveIntegerField(default=0)
     comments = models.CharField(max_length=100,null=True)
+
+    def __str__(self) -> str:
+        return self.user.username
