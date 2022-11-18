@@ -16,6 +16,6 @@ class Post(models.Model):
 
 
 class UserFollowing(models.Model):
-    user_id = models.ForeignKey(User, related_name="following")
-    following_user_id = models.ForeignKey(User, related_name="followers")
+    user_id = models.OneToOneField(User, related_name="following",on_delete=models.CASCADE)
+    following_user_id = models.ManyToManyField(User, related_name="followers",blank=True)
     created = models.DateTimeField(auto_now_add=True)

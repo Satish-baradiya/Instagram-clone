@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse,redirect
 from django.contrib import messages
 from .forms import UserRegistrationForm, PostUploadForm
 from .models import Post
+from django.contrib.auth.models import User
+
 # Create your views here.
 
 
@@ -47,3 +49,20 @@ def post(request):
     else:
         form = PostUploadForm()
     return render(request,'insta/post.html',context={'form':form})  
+
+
+
+def user_listing(request):
+    users = User.objects.exclude(username=request.user.username)
+    return render(request,'insta/userlist.html',context={
+        'users':users
+    })
+
+
+
+def profile(requset, pk):
+    user = User.objects.get(id=pk)
+    print(user)
+    return render(requset, 'insta/userprofile.html',context= {
+        'user':user
+    })
