@@ -1,1 +1,9 @@
 {{ user }}
+<form method="post">
+    {% csrf_token %}
+    <div class="button has-addons">
+        <button class="button is-danger" name="unfollow" value="unfollow">Unfollow</button>
+        <button class="button is-success" name="follow" value="follow">Follow</button>
+    </div>
+
+</form>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse,redirect
 from django.contrib import messages
 from .forms import UserRegistrationForm, PostUploadForm
-from .models import Post
+from .models import Post, UserFollowing
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -18,7 +18,6 @@ def home(request):
     })
 
 
-
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -32,7 +31,6 @@ def register(request):
 
     context = {'form': form}
     return render(request, 'insta/register.html', context)
-
 
 
 def post(request):
@@ -51,7 +49,6 @@ def post(request):
     return render(request,'insta/post.html',context={'form':form})  
 
 
-
 def user_listing(request):
     users = User.objects.exclude(username=request.user.username)
     return render(request,'insta/userlist.html',context={
@@ -59,10 +56,17 @@ def user_listing(request):
     })
 
 
+def profile(request, pk):
+    user = User.objects.get(pk=pk)
+    if request.method == "POST":
+        current_user = request.user
+        userfollowing = UserFollowing.objects.get(user_id=current_user.id)
+        data = request.POST
+        if "follow" in data:
+            userfollowing.following_user_id.add(user)
+        elif "unfollow" in data:
+            userfollowing.following_user_id.remove(user)
 
-def profile(requset, pk):
-    user = User.objects.get(id=pk)
-    print(user)
-    return render(requset, 'insta/userprofile.html',context= {
+    return render(request, 'insta/userprofile.html',context= {
         'user':user
     })
