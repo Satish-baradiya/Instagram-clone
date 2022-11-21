@@ -26,10 +26,8 @@ class UserFollowing(models.Model):
         return self.user_id.username
 
 
-# @receiver(pre_save, sender=User)
-# def correct_price(sender,**kwargs):
-#     user= kwargs['instance']
-#     newfollow = UserFollowing.objects.create(user_id=user)
-#     newfollow.save()
-    # price_of_product = Product.objects.get(id=cart_items.product.id)
-    # cart_items.price = cart_items.quantity * float(price_of_product.price)
+
+@receiver(post_save, sender=User)
+def create_user_following(sender, instance, created, **kwargs):
+    if created:
+        UserFollowing.objects.create(user_id = instance)
