@@ -8,5 +8,6 @@ urlpatterns = [
     path('logout/',authviews.LogoutView.as_view(template_name='insta/logout.html'),name='logout'),
     path('post/',views.post,name='post'),
     path('userlist/',views.user_listing,name='userlist'),
-    path('profile/<int:pk>/',views.profile,name='profile')
+    path('profile/<int:pk>/',views.profile,name='profile'),
+    path('postlist/',views.post_list,name='post_list')
 ]

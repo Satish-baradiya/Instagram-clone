@@ -70,3 +70,16 @@ def profile(request, pk):
     return render(request, 'insta/userprofile.html',context= {
         'user':user
     })
+
+
+def post_list(request):
+    user = request.user
+    print('Current user is ',user.username)
+    followers = UserFollowing.objects.filter(user_id=user.id).values_list('following_user_id',flat=True)
+    print('current user is follows ', followers)
+    posts = Post.objects.filter(user__id__in=followers)
+    print(posts)
+
+    return render(request, 'insta/postlist.html',context={
+        'posts':posts
+    })
