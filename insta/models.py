@@ -11,6 +11,7 @@ class Post(models.Model):
     description = models.CharField(max_length=250)
     likes = models.PositiveIntegerField(default=0)
     comments = models.CharField(max_length=100,null=True)
+    user_likes = models.ManyToManyField(User,related_name='user_likes')
 
     def __str__(self) -> str:
         return self.user.username
@@ -25,6 +26,15 @@ class UserFollowing(models.Model):
     def __str__(self) -> str:
         return self.user_id.username
 
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="posts")
+    alreadyLiked = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f"{self.user} like {self.post}"
 
 
 @receiver(post_save, sender=User)

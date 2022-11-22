@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse,redirect
 from django.contrib import messages
 from .forms import UserRegistrationForm, PostUploadForm
-from .models import Post, UserFollowing
+from .models import Post, UserFollowing, Like
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -80,3 +80,17 @@ def post_list(request):
     return render(request, 'insta/postlist.html',context={
         'posts':posts
     })
+
+
+def like(request,pk):
+
+    if request.method == 'POST':
+        user = request.user
+        post = Post.objects.get(pk=pk)
+        newlike = Like(user=user,post=post)
+        newlike.alreadyLiked = True
+        post.likes +=1
+        post.user_likes.add(user)
+        post.save()
+        newlike.save()
+        return redirect('post_list')

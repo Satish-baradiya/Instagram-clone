@@ -1,4 +1,11 @@
 {% for p in posts %}
 <img src="{{ p.img }}"> 
 {{ p.description }}
+<form method="post" action="{% url 'like' p.id %}", name="post_list">
+    {% csrf_token %}
+    <div class="button has-addons">
+        <button class="button is-success" name="like" value="like">Like</button>{{p.likes}}
+    </div>
+
+</form>
 {% endfor %}
